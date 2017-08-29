@@ -1,78 +1,43 @@
 <div class="home col-xs-12 ">
+  <h2><img src="{{lIco}}" > {{label}}</h2>
+  {{#if isRealUser}}
+    <div class="userref">
+        <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}<br/>
+    </div>
+  {{/if}}
+  {{#if url}}
+    <div class="urlref"><b>Homepage</b>: <a href="{{url}}">{{url}}</a></div><br/>
+  {{/if}}
+
   <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#topic">Topic</a></li>
       <li><a data-toggle="tab" href="#list">List View</a></li>
-      <li><a data-toggle="tab" title="Conversations in which I am the parent node" href="#pconv">P-Conversation</a></li>
-      <li><a data-toggle="tab" title="Conversations in which I am a child node" href="#cconv">C-Conversation</a></li>
-      <li><a data-toggle="tab" href="#relations">Connections</a></li>
-      <li><a data-toggle="tab" href="#tree">Tree</a></li>
+<!--      <li><a data-toggle="tab" href="#pivots">Pivots</a></li> -->
       <li><a data-toggle="tab" href="#source">Source</a></li>
   </ul>
 
   <div class="tab-content">
-
-      <div id="topic" class="tab-pane fade in active">
-
-          <div class="row">
-              <div class="home col-xs-8 col-sm-8 ">
-                  <img src="{{lIco}}" >
-                  <h2>{{label}}</h2>
-                  {{#if isRealUser}}
-                    <p class="blog-post-meta">
-                        <div class="userref">
-                            <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}<br/>
-                        </div>
-                        <div class="urlref"><a href="{{url}}">{{url}}</a></div>
-                    </p>
-                  {{/if}}
-                  {{#if canEdit}}
-                    <a href='{{editurl}}'>Edit</a><br/>
-                  {{/if}}
-                  <div class="body pre-scrollable span12" style="border: 1px solid #e1e1e8; resize:both;overflow: auto;">
-                      {{{details}}}
-                  </div>
-                  <div class="transclude"></div>
-              </div> <!-- /col 8 -->
-              {{> pivots}}
-          </div> <!-- /row -->
-      </div> <!-- /topic -->
-      <div id="list" class="tab-pane fade">
-          <div class="blog-post col-xs-7">
-              <h2>{{label}}</h2>
-              {{#if isRealUser}}
-                <p class="blog-post-meta">
-                    <div class="userref">
-                        <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}<br/>
-                    </div>
-                    <div class="urlref"><a href="{{url}}">{{url}}</a></div>
-                </p>
-              {{/if}}
-              {{#if canEdit}}
-                <a href='{{editurl}}'>Edit</a><br/>
-              {{/if}}
-              <div class="body pre-scrollable" style="border: 1px solid #e1e1e8;">{{{details}}}</div>
-              {{> pivots}}
-          </div>
-      </div> <!-- /list -->
-      <div id="cconv" class="tab-pane fade">
-          <div class="ccontable pre-scrollable" style="border: 1px solid #e1e1e8;"></div>
-      </div> <!-- /cconv -->
-      <div id="pconv" class="tab-pane fade">
-          <div class="pcontable pre-scrollable" style="border: 1px solid #e1e1e8;"></div>
-      </div> <!-- /pconv -->
-
-      <div id="source" class="tab-pane fade">
-          <div class="sourcecode">{{source}}</div>
+    <div id="topic" class="tab-pane fade in active">
+      {{#if canEdit}}
+        <a href='{{editurl}}'>Edit</a><br/>
+      {{/if}}
+      <div class="body pre-scrollable span12" style="border: 1px solid #e1e1e8; resize:both;overflow: auto;">
+        {{{details}}}
       </div>
-      <div id="relations" class="tab-pane fade">
-          <h1>Connections</h1>
-          <div class="newreln"></div>
-          <div class="relationlist"></div>
-      </div> <!-- /relations -->
-      <div id="tree" class="tab-pane fade">
-          <div id="jstree_div"></div>
-      </div> <!-- /tree -->
+      {{> pivots_wide}}
+    </div> <!-- /topic -->
+    <div id="pivots" class="tab-pane fade">
+    </div>
+    <div id="list" class="tab-pane fade">
+      {{#if canEdit}}
+        <a href='{{editurl}}'>Edit</a><br/>
+      {{/if}}
+      <div class="body pre-scrollable" style="border: 1px solid #e1e1e8; esize:both;overflow: auto;">{{{details}}}</div>
+      {{> pivots}}
+    </div> <!-- /list -->
 
+    <div id="source" class="tab-pane fade">
+      <div class="sourcecode">{{source}}</div>
+    </div>
   </div>
-  <div class="home col-xs-12 ">
 </div>

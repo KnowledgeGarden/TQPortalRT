@@ -11,7 +11,12 @@
   </div>
   <div class="col-xs-12"> <!-- position:"left"; -->
       <div class="pagination">
-          <!-- TODO paint pagination here -->
+        {{#if start}}
+          <a href="/usernext/{{start}}">Next</a>&nbsp;&nbsp;&nbsp;
+        {{/if}}
+        {{#if ret}}
+          <a href="/userprev/{{ret}}">Previous</a>
+        {{/if}}
       </div>
   </div>
 </div>

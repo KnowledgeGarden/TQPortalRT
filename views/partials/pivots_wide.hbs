@@ -1,0 +1,81 @@
+<div class="col-xs-12">
+  <table style="width:100%" border="1">
+    <tr>
+    {{#if showTags}}
+      <td valign="top">
+        <h3>Tags</h3>
+        {{#if isAuthenticated}}
+        <p><img src="/images/newbutton_sm.png"><a href="/tagnew/{{locator}}"><b>Add Tags</b></a></p>
+        {{/if}}
+        <div class="taglist pre-scrollable">
+            {{#each tags}}
+                <a href="/tag/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+      </td>
+    {{/if}}
+    {{#if showUsers}}
+      <td valign="top">
+        <h3>Users</h3>
+        <div class="userlist pre-scrollable">
+
+            {{#each users}}
+                <a href="/user/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+      </td>
+    {{/if}}
+    <!-- Guild Members -->
+    {{#if showMembers}}
+      <td valign="top">
+        <h3>Members</h3>
+        <div class="userlist pre-scrollable">
+
+            {{#each members}}
+                <a href="/user/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+      </td>
+    {{/if}}
+    <!-- Guild Quests -->
+    {{#if showQuests}}
+
+      <td valign="top">
+        <h3>Quests</h3>
+        <div class="userlist pre-scrollable">
+
+            {{#each quests}}
+                <a href="/quest/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+      </td>
+    {{/if}}
+
+    {{#if showDocs}}
+      <td valign="top">
+        <h3>Documents</h3>
+        <div class="doclist pre-scrollable">
+
+            {{#each documents}} <!-- TODo: we are punting to Topic display -->
+                <a href="/topic/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+      </td>
+    {{/if}}
+    {{#if showTranscludes}}
+
+
+      <td valign="top">
+        <h3>Transclusions</h3>
+        <div class="transcludelist pre-scrollable">
+
+            {{#each transcludes}} <!-- TODo: we are punting to Topic display -->
+                <a href="/topic/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+
+        </div>
+      </td>
+    {{/if}}
+  </tr>
+  </table>
+</div> <!-- /col 4 -->

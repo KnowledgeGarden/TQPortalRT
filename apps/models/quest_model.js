@@ -13,6 +13,7 @@ QuestModel =  module.exports = function(environment) {
     self.fillDatatable = function(start, count, userId, userIP, sToken, callback) {
       console.log("QuestModel.fillDatatable "+userId);
       topicDriver.listInstanceTopics(Constants.QUEST_TYPE, start, count,
+        Constants.SORT_LABEL, Constants.ASC_DIR,
           userId, userIP, sToken, function bmF(err, rslt) {
         console.log("LISTQUESTS"+err+" | "+JSON.stringify(rslt));
         return callback(err, rslt, 0, 0);

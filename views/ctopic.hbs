@@ -1,138 +1,186 @@
+<script src="/js/split.js"></script>
+
+<style>
+  .split, .split-flex {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .split.split-horizontal, .gutter.gutter-horizontal {
+     height: 100%;
+     float: left;
+   }
+  .split, .gutter.gutter-horizontal {
+    height: 300px;
+  }
+ .gutter {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+  .gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image: url('/images/vertical.png');
+  }
+  .content {
+    border: 1px solid #C0C0C0;
+    box-shadow: inset 0 1px 2px #e4e4e4;
+    background-color: #fff;
+    height: 100%;
+
+  }
+  .topicpane {
+    height: 100%;
+  }
+</style>
+
 <div class="home col-xs-12 ">
+  <h2><img src="{{lIco}}" > {{label}}</h2>
+  <div class="userref">
+      <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}
+      {{#if canEdit}}
+        &nbsp;&nbsp;<a href='{{editurl}}'>Edit</a><br/>
+      {{else}}
+        <br/>
+      {{/if}}
+  </div>
+  <div class="urlref"><a href="{{url}}">{{url}}</a></div>
   <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#topic"><h4>Topic</h4></a></li>
       <li><a data-toggle="tab" href="#list"><h4>List View</h4></a></li>
-      <li><a data-toggle="tab" title="My conversation tree in a given context" href="#cconv"><h4>Conversation Tree</h4></a></li>
+      {{#if isAuthenticated}}
+      <li><a data-toggle="tab" href="#pivots"><h4>Reply</h4></a></li>
+      {{/if}}
       <li><a data-toggle="tab" title="Conversation parents and nearest child nodes" href="#nconv"><h4>Conversation Neighborhood</h4></a></li>
       <li><a data-toggle="tab" href="#relations"><h4>Connections</h4></a></li>
       <li><a data-toggle="tab" href="#source"><h4>Source</h4></a></li>
   </ul>
   <div class="tab-content">
-      <div id="topic" class="tab-pane fade in active">
-          <div class="row">
-              <div class="home col-xs-8 col-sm-8 ">
-                  <img src="{{lIco}}" >
-                  <h2>{{label}}</h2>
-                  <p class="blog-post-meta">
-                      <div class="userref">
-                          <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}
-                          {{#if canEdit}}
-                            &nbsp;&nbsp;<a href='{{editurl}}'>Edit</a><br/>
-                          {{else}}
-                            <br/>
-                          {{/if}}
-                      </div>
-                      <div class="urlref"><a href="{{url}}">{{url}}</a></div>
-                  </p>
-                  <div class="body pre-scrollable span12" style="border: 1px solid #e1e1e8; resize:both;overflow: auto;">
-                      {{{details}}}
-                  </div>
-                  {{#if isAuthenticated}}
-                      <hr><br/><br/>
-                      <h3> Activities</h3>
-                      <!-- reply buttons -->
-                      {{> transcludes}}
-                      <p>
-                        <!-- remember these nodes for transclusion or connections -->
-                        <a href="/remember/{{locator}}"><button type="submit" class="btn btn-btn-success btn-small">Remember</button></a>
-                        <a href="/rememberevidence/{{locator}}"><button type="submit" class="btn btn-btn-success btn-small">Remember as Evidence</button></a><br />
-                      </p>
-                      <p>
-                        <table border="1">
-                            <tr>
-                                <td>
-                                    <a href="/newquestion/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Question" src="/images/ibis/issue.png"></button></a>
-                                </td>
-                                <td>
-                                    <a href="/newanswer/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Answer" src="/images/ibis/position.png"></button></a>
-                                </td>
-                                <td>
-                                    <a href="/newpro/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Pro Argument" src="/images/ibis/plus.png"></button></a>
-                                </td>
-                                <td>
-                                    <a href="/newcon/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Con Argument" src="/images/ibis/minus.png"></button></a>
-                                </td>
-                                <td>
-                                    <a href="/newreference/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Reference Link" src="/images/ibis/reference.png"></button></a>
-                                </td>
+    <div id="topic" class="tab-pane fade in active">
 
-                            </tr>
-                        </table>
-                      </p>
-                  {{/if}}
-              </div> <!-- /col 8 -->
-              {{> pivots}}
-          </div> <!-- /row -->
-      </div> <!-- /topic -->
-      <div id="list" class="tab-pane fade">
-          <div class="blog-post col-xs-7">
-              <img src="{{lIco}}" >
-              <h2>{{label}}</h2>
-             <p class="blog-post-meta">
-                  <div class="userref">
-                      <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}
-                      {{#if canEdit}}
-                        &nbsp;&nbsp;<a href='{{editurl}}'>Edit</a><br/>
-                      {{else}}
-                        <br/>
-                      {{/if}}
-                  </div>
-                  <div class="urlref"><a href="{{url}}">{{url}}</a></div>
-              </p>
-              <div class="body pre-scrollable span12" style="border: 1px solid #e1e1e8; resize:both;overflow: auto;">
-                  {{{details}}}
-              </div>
-              <div class="transclude"></div>
-              {{> pivots}}
-          </div>
-      </div> <!-- /list -->
-      <div id="cconv" class="tab-pane fade">
-          <div class="ccontable pre-scrollable" style="border: 1px solid #e1e1e8;">
-            <div id="myConTree">{{{myTree}}}</div>
-          </div>
-      </div> <!-- /cconv -->
-      <div id="nconv" class="tab-pane fade">
-          <div class="ccontable pre-scrollable" style="border: 1px solid #e1e1e8;">
-            <h3>Conversation Neighborhood</h3>
-            <div id="neighborhood">{{{neighborhood}}}</div>
-          </div>
-      </div> <!-- /nconv -->
+      <div class="topicpane">
+        <div id="one" class="split split-horizontal">
+          <div id="c" class="split content">
+            <div class="body pre-scrollable" style="border: 1px solid #e1e1e8; ">
+                {{{details}}}
+            </div>
+          </div> <!--/c -->
+        </div> <!-- /one -->
+        <div id="two" class="split split-horizontal">
+          <h4>Conversation</h4>
+          <div id="d" class="split content">
+            <div class="ccontable pre-scrollable" style="border: 1px solid #e1e1e8;">
+              <div id="myConTree">{{{myTree}}}</div>
+            </div>
+          </div> <!-- /d -->
+        </div> <!-- /two -->
+        {{> pivots_wide}}
+      </div> <!-- /topicpane -->
+    </div> <!-- /topic -->
+    <div id="pivots" class="tab-pane fade">
+      <h3> Activities</h3>
+      {{> transcludes}}
+      <!-- remember these nodes for transclusion or connections -->
+      <a href="/remember/{{locator}}"><button type="submit" class="btn btn-btn-success btn-small">Remember</button></a>
+      <a href="/rememberevidence/{{locator}}"><button type="submit" class="btn btn-btn-success btn-small">Remember as Evidence</button></a><br/>
+      <!-- reply buttons -->
+      <table border="1">
+        <tr>
+          <td>
+              <a href="/newquestion/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Question" src="/images/ibis/issue.png"></button></a>
+          </td>
+          <td>
+              <a href="/newanswer/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Answer" src="/images/ibis/position.png"></button></a>
+          </td>
+          <td>
+              <a href="/newpro/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Pro Argument" src="/images/ibis/plus.png"></button></a>
+          </td>
+          <td>
+              <a href="/newcon/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Con Argument" src="/images/ibis/minus.png"></button></a>
+          </td>
+          <td>
+              <a href="/newreference/{{locator}}?contextLocator={{context}}"><button type="submit" class="btn btn-btn-success btn-small"><img title="New Reference Link" src="/images/ibis/reference.png"></button></a>
+          </td>
+        </tr>
+      </table>    </div>
+    <div id="list" class="tab-pane fade">
+      <h2><img src="{{lIco}}" > {{label}}</h2>
+        <div class="userref">
+            <a href="/user/{{username}}">Creator</a>&nbsp;&nbsp;{{date}}
+            {{#if canEdit}}
+              &nbsp;&nbsp;<a href='{{editurl}}'>Edit</a><br/>
+            {{else}}
+              <br/>
+            {{/if}}
+        </div>
+      <div class="urlref"><a href="{{url}}">{{url}}</a></div>
+      <div class="body pre-scrollable span12" style="border: 1px solid #e1e1e8; resize:both;overflow: auto;">
+        {{{details}}}
+      </div>
+      <!--<div class="transclude"></div>-->
+      <row>
+        {{> pivots_wide}}
+      </row>
+      <row>
+      <h4>Conversation</h4>
+      <!--<div id="d" class="split content">-->
+        <div class="ccontable pre-scrollable" style="border: 1px solid #e1e1e8;">
+          <div id="myConTree">{{{myTree}}}</div>
+        </div>
+      </row>
+      <!--</div>  /d -->
 
-      <div id="source" class="tab-pane fade">
-          <div class="sourcecode">{{source}}</div>
+    </div> <!-- /list -->
+    <div id="nconv" class="tab-pane fade">
+      <div class="ccontable pre-scrollable" style="border: 1px solid #e1e1e8;">
+        <h3>Conversation Neighborhood</h3>
+        <div id="neighborhood">{{{neighborhood}}}</div>
       </div>
-      <div id="relations" class="tab-pane fade">
-          <h1>Connections</h1>
-          <div class="newreln">
-            {{#if isAuthenticated}}
-              <table border="1">
-                <tr><th>Source</th><th>Target</th></tr>
-                <tr>
-                  <td><a href="/relationnew/?srclocator={{locator}}"><button type="submit" class="btn btn-btn-success btn-small">New Relation</button></a></td>
-                  <td><a href="/relationnew/?trglocator={{locator}}"><button type="submit" class="btn btn-btn-success btn-small">New Relation</button></a></td>
-                </tr>
-              </table>
-            {{/if}}
-            {{#if connections}}
-              <table>
-                <tr><th width="30%">Source</th><th width="30%">Relation</th><th width="30%">Target</th></tr>
-                {{#each connections}}
-                  <tr>
-                    {{#isSrc sORt}}
-                      <td>This Topic</td>
-                      <td><a href='/topic/{{relationLocator}}'><img src='/images/cogwheels_sm.png'>{{relationLabel}}</a></td>
-                      <td><a href='/topic/{{documentLocator}}'><img src='{{documentSmallIcon}}'>{{documentLabel}}</a></td>
-                    {{else}}
-                      <td><a href='/topic/{{documentLocator}}'><img src='{{documentSmallIcon}}'>{{documentLabel}}</a></td>
-                      <td><a href='/topic/{{relationLocator}}'><img src='/images/cogwheels_sm.png'>{{relationLabel}}</a></td>
-                      <td>This Topic</td>
-                    {{/isSrc}}
-                  </tr>
-                {{/each}}
-              </table>
-            {{/if}}
-          </div>
-          <div class="relationlist"></div>
+    </div> <!-- /nconv -->
+
+    <div id="source" class="tab-pane fade">
+        <div class="sourcecode">{{source}}</div>
+    </div>
+    <div id="relations" class="tab-pane fade">
+      <h1>Connections</h1>
+      <div class="newreln">
+        {{#if isAuthenticated}}
+          <table border="1">
+            <tr><th>Source</th><th>Target</th></tr>
+            <tr>
+              <td><a href="/relationnew/?srclocator={{locator}}"><button type="submit" class="btn btn-btn-success btn-small">New Relation</button></a></td>
+              <td><a href="/relationnew/?trglocator={{locator}}"><button type="submit" class="btn btn-btn-success btn-small">New Relation</button></a></td>
+            </tr>
+          </table>
+        {{/if}}
+        {{#if connections}}
+          <table>
+            <tr><th width="30%">Source</th><th width="30%">Relation</th><th width="30%">Target</th></tr>
+            {{#each connections}}
+              <tr>
+                {{#isSrc sORt}}
+                  <td>This Topic</td>
+                  <td><a href='/topic/{{relationLocator}}'><img src='/images/cogwheels_sm.png'>{{relationLabel}}</a></td>
+                  <td><a href='/topic/{{documentLocator}}'><img src='{{documentSmallIcon}}'>{{documentLabel}}</a></td>
+                {{else}}
+                  <td><a href='/topic/{{documentLocator}}'><img src='{{documentSmallIcon}}'>{{documentLabel}}</a></td>
+                  <td><a href='/topic/{{relationLocator}}'><img src='/images/cogwheels_sm.png'>{{relationLabel}}</a></td>
+                  <td>This Topic</td>
+                {{/isSrc}}
+              </tr>
+            {{/each}}
+          </table>
+        {{/if}}
       </div>
-  </div>
+      <div class="relationlist"></div>
+    </div> <!--/relations -->
+  </div> <!-- tabcontent -->
 </div>
+<script>
+  Split(['#one', '#two'], {
+    sizes: [75, 25],
+    gutterSize: 10,
+  });
+</script>

@@ -24,16 +24,88 @@ exports.plugin = function(app, environment) {
      */
     app.get("/user", helpers.isPrivate, function (req, res) {
         var data =  environment.getCoreUIData(req);
-        data.start=0;
-        UserModel.listUsers(0, -1, function uLU(err, rslt) {
+        var start = helpers.validateNumber(parseInt(req.query.start)),
+            count = helpers.validateCount(parseInt(req.query.count));
+        if (!start) {
+            start = 0;
+        }
+        if (!count) {
+            count = Constants.MAX_HIT_COUNT;
+        }
+        UserModel.listUsers(start, count, function uLU(err, rslt) {
             if (rslt.cargo) {
+              var cursor = start + rslt.cargo.length;
+              console.log("FOOXXX "+cursor);
                 data.cargo = rslt.cargo;
+                data.start = cursor;
+                data.count = Constants.MAX_HIT_COUNT; //pagination size
+                data.ret = 0;
             }
             return res.render("userindex", data);
         });
 
     });
+    
+    app.get("/usernext/:id", helpers.isPrivate, function(req, res) {
+      var start = parseInt(req.params.id),
+          count = Constants.MAX_HIT_COUNT;
+      console.log("UserNext: "+start);
+      //OK: we get here. "start" sets the cursor.
+      var userId= helpers.getUserId(req),
+          userIP= "",
+          sToken= null,
+          usx = helpers.getUser(req),
+          credentials = usx.uRole;
+          UserModel.listUsers(start, count, function uLU(err, rslt) {
+              if (rslt.cargo) {
+                var cursor = start + rslt.cargo.length;
+                console.log("FOOXXX "+cursor);
+                  data.cargo = rslt.cargo;
+                  data.start = cursor;
+                  data.count = Constants.MAX_HIT_COUNT; //pagination size
+                  if (cursor > 0) {
+                    var ret = cursor - count;
+                    if (ret < 0)
+                      ret = 0;
+                    data.ret = ret;
+                  }
+              }
+              return res.render("userindex", data);
+          });
+    });
 
+    app.get("/userprev/:id", helpers.isPrivate, function(req, res) {
+      var start = parseInt(req.params.id),
+          count = Constants.MAX_HIT_COUNT;
+      console.log("UserPrev: "+start);
+      //OK: we get here. "start" sets the cursor.
+      var userId= helpers.getUserId(req),
+          userIP= "",
+          sToken= null,
+          usx = helpers.getUser(req),
+          credentials = usx.uRole;
+          UserModel.listUsers(start, count, function uLU(err, rslt) {
+              if (rslt.cargo) {
+                var cursor = start + rslt.cargo.length;
+                console.log("FOOXXX "+cursor);
+                  data.cargo = rslt.cargo;
+                  data.start = cursor;
+                  data.count = Constants.MAX_HIT_COUNT; //pagination size
+                  data.cargo = data.cargo;
+                  if (cursor > 0) {
+                    var ret = cursor - count;
+                    if (ret < 0)
+                      ret = 0;
+                    data.ret = ret;
+                  }
+              }
+              return res.render("userindex", data);
+          });
+    });
+
+    /**
+     * Fetch a specific user
+     */
     app.get("/user/:id", helpers.isPrivate, function (req, res) {
         var q = req.params.id;
         if (q) {
@@ -51,12 +123,16 @@ exports.plugin = function(app, environment) {
                 if (credentials) {
                   var x = false,
                       where = credentials.indexOf(q);
-                  if (where < 0) {
+                  console.log("HERE " + q + " "+userId);
+                  if (q === userId) {
+                        x = true;
+                  } else if (where < 0) {
                     var where2 = credentials.indexOf(Constants.ADMIN_CREDENTIALS);
                     if (where2 > -1) {x = true;}
                   } else {
                     x = true;
                   }
+                  console.log("HERE2 " + x);
                   data.canEdit = x;
                   if (x) {
                       data.editurl = "/useredit/"+q;

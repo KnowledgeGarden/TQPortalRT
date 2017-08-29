@@ -23,6 +23,7 @@ GuildModel =  module.exports = function(environment) {
     self.fillDatatable = function(start, count, userId, userIP, sToken, callback) {
         console.log("GuildModel.fillDatatable "+userId);
         topicDriver.listInstanceTopics(Constants.GUILD_TYPE, start, count,
+          Constants.SORT_LABEL, Constants.ASC_DIR,
             userId, userIP, sToken, function bmF(err, rslt) {
           console.log("LISTGUILDS "+err+" | "+JSON.stringify(rslt));
           return callback(err, rslt, 0, 0);

@@ -1,8 +1,17 @@
 <img src="{{nodeicon}}"><h1>{{formtitle}}</h1>
 <hr>
+<script>
+  function validateForm() {
+    var x = document.forms["conform"]["title"].value;
+    if (x == "") {
+        alert("Title must be filled out");
+        return false;
+    }
+  }
+</script>
 
 <div class="blog-post col-xs-9">
-    <form method="post" action="{{action}}"  role="form" class="form-horizontal">
+    <form name="conform" method="post" action="{{action}}"  role="form" class="form-horizontal">
       <!-- locator means this is an edit of this node -->
         <input type="hidden" name="locator" value="{{locator}}">
         <!-- parentlocator and context are parentLocator and conversation rootLocator for child nodes -->
@@ -24,7 +33,10 @@
         <div class="form-group">
             <label for="desc" class="col-sm-2 control-label">Body</label>
             <div class="col-sm-10">
-                <textarea id="summernote" rows="5" name="body" placeholder="Enter the article description" class="form-control">{{body}}</textarea>
+              <textarea name="body" id="editor1" ></textarea>
+              <script>
+                CKEDITOR.replace( 'editor1' );
+              </script>
             </div>
         </div>
         {{#if isNotEdit}}
