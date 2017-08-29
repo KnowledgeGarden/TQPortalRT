@@ -1,0 +1,22 @@
+{{#if transcludelocator}}
+  <p>
+    <form method="post" action="/transclude/"  role="form" class="form-horizontal">
+      <input type="hidden" name="locator" value="{{locator}}">
+      <input type="hidden" name="transcludelocator" value="{{transcludelocator}}">
+      <input type="hidden" name="contextLocator" value="{{context}}">
+      <input type="hidden" name="language" value="{{language}}">
+      <button type="submit" class="btn btn-btn-success btn-small">Transclude Remembered Topic</button>
+    </form>
+  </p>
+{{/if}}
+{{#if transcludeevidencelocator}}
+  <p>
+    <form method="post" action="/transcludeevidence/"  role="form" class="form-horizontal">
+      <input type="hidden" name="locator" value="{{locator}}">
+      <input type="hidden" name="transcludelocator" value="{{transcludeevidencelocator}}">
+      <input type="hidden" name="contextLocator" value="{{context}}">
+      <input type="hidden" name="language" value="{{language}}">
+      <button type="submit" class="btn btn-btn-success btn-small">Transclude Remembered Evidence</button>
+    </form>
+  </p>
+{{/if}}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>TopicQuests Foundation</title>
+        <link href="/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+        <link href="/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+<!--  <link href="/css/jquery-ui.css" media="all" rel="stylesheet" type="text/css" /> -->
+        <!--<link href="/css/leaflet.css" media="all" rel="stylesheet" type="text/css" />-->
+        <link href="/css/sticky-footer-navbar.css" rel="stylesheet">
+
+        <script src="/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+        <style>
+            .flashMsg {
+                border: 8px solid #d5d5d5;
+                border-radius: 14px;
+                width: 100%;
+                font-size: 150%;
+            }
+        </style>
+        <script type="text/javascript">
+           jQuery(document).ready(function ($) {
+             //TODO
+           });
+        </script>
+
+    </head>
+    <body>
+        <!--TODO: we can put a boolean test here to select
+            between webmenubar and desktopmenubar to share this code
+            with an Electron desktop version -->
+        {{> webmenubar}}
+        <div class="container">
+            {{#if flashMsg}}
+                <p class="flashMsg">{{{flashMsg}}}</p>
+            {{/if}}
+            {{{body}}}
+            {{> footer}}
+        </div> <!-- /container -->
+
+    </body>
+    <script src="/js/bootstrap.js"></script>
+    <!--<script src="/js/jquery-columnnav-1.1.0.js"></script>-->
+    <script src="/js/conversation.js"></script>
+    <!--<script src="/js/jquery-ui.min.js"></script>-->
+
+</html>

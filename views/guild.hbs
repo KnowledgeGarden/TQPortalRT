@@ -1,0 +1,36 @@
+<div class="col-xs-12">
+  <img src="/images/game/guild.png" />
+  <h2>{{label}}</h2>
+  <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#topic">Guild</a></li>
+      {{#if isGuildMember}}
+        <li><a data-toggle="tab" href="#groom">Guild Room</a></li>
+      {{/if}}
+  </ul>
+
+  <div class="tab-content">
+      <div id="topic" class="tab-pane fade in active">
+          <div class="row">
+              <div class="home col-xs-8 col-sm-8 ">
+                <div class="body pre-scrollable span12" style="border: 1px solid #e1e1e8; resize:both;overflow: auto;">
+                    {{{details}}}
+                </div>
+              </div>
+              {{> pivots}}
+          </div>
+          <div class="row">
+            {{#if canJoin}}
+            <div class="form-group">
+                <a href="/joinguild/{{guildId}}"><button type="submit" class="btn btn-btn-success btn-small">Join Guild</button></a><br />
+            </div>
+
+            {{/if}}
+          </div>
+      </div>
+      <div id="groom" class="tab-pane fade">
+        <!-- painting guild.hbs means also painting guild_room.hbs -->
+        {{> guild_room }}
+      </div>
+  </div>
+
+</div>

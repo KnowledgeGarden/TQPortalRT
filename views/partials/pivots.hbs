@@ -1,0 +1,57 @@
+<div class="col-xs-4 col-sm-4">
+    {{#if showTags}}
+        <div class="taglist pre-scrollable">
+          <h3>Tags</h3>
+          {{#if isAuthenticated}}
+          <p><img src="/images/newbutton_sm.png"><a href="/tagnew/{{locator}}"><b>Add Tags</b></a></p>
+          {{/if}}
+            {{#each tags}}
+                <a href="/tag/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if showUsers}}
+        <div class="userlist pre-scrollable">
+            <h3>Users</h3>
+            {{#each users}}
+                <a href="/user/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+    {{/if}}
+    <!-- Guild Members -->
+    {{#if showMembers}}
+        <div class="userlist pre-scrollable">
+            <h3>Members</h3>
+            {{#each members}}
+                <a href="/user/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+    {{/if}}
+    <!-- Guild Quests -->
+    {{#if showQuests}}
+        <div class="userlist pre-scrollable">
+            <h3>Quests</h3>
+            {{#each quests}}
+                <a href="/quest/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if showDocs}}
+        <div class="doclist pre-scrollable">
+            <h3>Documents</h3>
+            {{#each documents}} <!-- TODo: we are punting to Topic display -->
+                <a href="/topic/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if showTranscludes}}
+        <div class="transcludelist pre-scrollable">
+            <h3>Transclusions</h3>
+            {{#each transcludes}} <!-- TODo: we are punting to Topic display -->
+                <a href="/topic/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+
+        </div>
+    {{/if}}
+</div> <!-- /col 4 -->

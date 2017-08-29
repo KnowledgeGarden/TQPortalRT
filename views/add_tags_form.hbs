@@ -1,0 +1,14 @@
+<h1>Add Tags</h1>
+<hr>
+<div class="blog-post col-xs-9">
+  <form method="post" action="/tag/new/"  role="form" class="form-horizontal">
+    <input type="hidden" name="locator" value="{{locator}}">
+    <input type="hidden" name="language" value="{{language}}">
+    {{> tag_form}}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success">Save</button>&nbsp;<a href="/" title="cancel" class="btn">Cancel</a>
+        </div>
+    </div>
+  </form>
+</div>

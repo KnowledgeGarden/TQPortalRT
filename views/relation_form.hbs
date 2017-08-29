@@ -1,0 +1,63 @@
+<!-- Relations are defined in relations.json -->
+<h1>New Connection Form</h1>
+<hr>
+<div class="blog-post col-xs-9">
+    <form method="post" action="/relation/new/"  role="form" class="form-horizontal">
+        <input type="hidden" name="srclocator" value="{{srclocator}}">
+        <input type="hidden" name="trglocator" value="{{trglocator}}">
+        <table border="1">
+          <tr><th>Source Topic</th><th>Relation Type</th><th>Target Topic</th></tr>
+          <tr>
+            <td>{{srclocator}}</td>
+            <td>
+              <select name="select" required="required">
+                <option value="top" selected>Please select a Relation</option>
+                <option value="CausesRelationType">Causes</option>
+                <option value="EnablesRelationType">Enables</option>
+                <option value="ImpliesRelationType">Implies</option>
+                <option value="ExplainsWhatRelationType">Explains What</option>
+                <option value="ExplainsWhyRelationType">Explains Why</option>
+                <option value="ExplainsHowRelationType">Explains How</option>
+                <option value="IsSimilarToRelationType">Similar To</option>
+                <option value="IsDifferentToRelationType">Different To</option>
+                <option value="IsOppositeOfRelationType">Opposite Of</option>
+                <option value="IsSameAsRelationType">Same As</option>
+                <option value="HasNothingToDoWithRelationType">Has Nothing To Do With</option>
+                <option value="SharesIssuesWithRelationType">Shares Issues</option>
+                <option value="IsAnalogousRelationType">Analogous To</option>
+                <option value="IsNotAnalogousRelationType">Not Analogous To</option>
+                <option value="IsMetaphorRelationType">Metaphor Of</option>
+                <option value="AgreesWithRelationType">Agrees With</option>
+                <option value="DisagreesWithRelationType">Disagrees With</option>
+                <option value="UsesRelationType">Uses</option>
+                <option value="ImprovesOnRelationType">Improves On</option>
+                <option value="AddressesRelationType">Addresses</option>
+                <option value="SolvesRelationType">Solves</option>
+                <option value="IsPrerequisiteForRelationType">Prerequisite For</option>
+                <option value="ImpairsRelationType">Impairs</option>
+                <option value="PreventsRelationType">Prevents</option>
+                <option value="ProvesRelationType">Proves</option>
+                <option value="RefutesRelationType">Refutes</option>
+                <option value="IsEvidenceForRelationType">Evidence For</option>
+                <option value="IsEvidenceAgainstRelationType">Evidence Against</option>
+                <option value="IsConsistentWithRelationType">Consistent With</option>
+                <option value="IsInconsistentWithRelationType">Inconsistent With</option>
+                <option value="IsExampleRelationType">Example Of</option>
+                <option value="PredictsRelationType">Predicts</option>
+                <option value="EnvisagesRelationRelationType">Envisages</option>
+                <option value="UnlikelyToAffectRelationType">Unlikely To Affect</option>
+                <option value="RespondsToRelationType">Responds To</option>
+                <option value="IsRelatedToRelationType">Related To</option>
+                <option value="IsPartOfRelationType">Part Of</option>
+                <option value="IsContainedInRelationType">Contained In</option>
+              </select>
+            </td>
+            <td>{{trglocator}}
+        </table><br/>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success">Save</button>&nbsp;<a href="/" title="cancel" class="btn">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

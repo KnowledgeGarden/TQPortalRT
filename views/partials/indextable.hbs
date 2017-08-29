@@ -1,0 +1,22 @@
+<!-- Pagination data -->
+<div id="tabledata"  start="{{start}}" count="{{count}}" total="{{total}}"></div>
+<div class="col-xs-10 pre-scrollable"  style="border: 1px solid #e1e1e8;"> <!-- position:"left"; -->
+    <div class="tableindex">
+        <!-- TODO paint the table here -->
+        <!-- which = e.g. /blog/ -->
+        {{#each cargo}}
+            <a href="{{which}}{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+        {{/each}}
+    </div>
+</div>
+<!-- whichnext = e.g. /blognext/ whichprev = e.g. /blogprev/ -->
+<div class="col-xs-12"> <!-- position:"left"; -->
+    <div class="pagination">
+      {{#if {{start}}
+        <a href="{{whichnext}}{{start}}?query={{query}}">Next</a>&nbsp;&nbsp;&nbsp;
+      {{/if}}
+      {{#if ret}}
+        <a href="{{whichprev}}{{ret}}?query={{query}}">Previous</a>
+      {{/if}}
+    </div>
+</div>

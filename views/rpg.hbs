@@ -1,0 +1,64 @@
+<div class="col-xs-12">
+    <div id="questdata"  start="{{qstart}}" count="{{qcount}}" total="{{qtotal}}"></div>
+    <div id="guilddata"  start="{{gstart}}" count="{{gcount}}" total="{{gtotal}}"></div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#quests">Quests</a></li>
+        <li><a data-toggle="tab" href="#guilds">Guilds</a></li>
+    </ul>
+    <div class="tab-content">
+
+        <div id="quests" class="tab-pane fade in active">
+
+            <div class="row">
+                <h2>Quest Central</h2>
+                {{#if isAuthenticated}}
+                    <div class="form-group">
+                        <a href="/questnew"><button type="submit" class="btn btn-btn-success btn-small">New Quest</button></a><br />
+                    </div>
+                {{/if}}
+
+                <div class="col-xs-10 pre-scrollable"  style="border: 1px solid #e1e1e8;"> <!-- position:"left"; -->
+                    <div class="tableindex">
+                        <!-- TODO paint the table here -->
+                        {{#each qcargo}}
+                            <a href="/quest/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="col-xs-12"> <!-- position:"left"; -->
+                    <div class="pagination">
+                      <a href="/questnext/{{start}}">Next</a>&nbsp;&nbsp;&nbsp;
+                      <a href="/questprev/{{ret}}">Previous</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="guilds" class="tab-pane fade">
+
+            <div class="row">
+                <h2>Guild Central</h2>
+                {{#if isAuthenticated}}
+                    <div class="form-group">
+                        <a href="/guildnew"><button type="submit" class="btn btn-btn-success btn-small">New Guild</button></a><br />
+                    </div>
+                {{/if}}
+
+                <div class="col-xs-10 pre-scrollable"  style="border: 1px solid #e1e1e8;"> <!-- position:"left"; -->
+                    <div class="tableindex">
+                        <!-- TODO paint the table here -->
+                        {{#each gcargo}}
+                            <a href="/guild/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="col-xs-12"> <!-- position:"left"; -->
+                    <div class="pagination">
+                      <a href="/guildnext/{{start}}">Next</a>&nbsp;&nbsp;&nbsp;
+                      <a href="/guildprev/{{ret}}">Previous</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="col-xs-12">
+  <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#meta">MetaRoom</a></li>
+      <li><a data-toggle="tab" href="#tree">GameTree</a></li>
+      <li><a data-toggle="tab" href="#roster">Roster</a></li>
+      {{#if isGuildLeader}}
+        <li><a data-toggle="tab" href="#leader">Leader</a></li>
+      {{/if}}
+  </ul>
+
+  <div class="tab-content">
+      <div id="meta" class="tab-pane fade in active">
+          <h2>Game room conversations and chat go here</h2>
+      </div>
+      <div id="tree" class="tab-pane fade">
+        <h2>Game Tree Goes Here</h2>
+      </div>
+      <div id="roster" class="tab-pane fade">
+        <h2>Roster</h2>
+        {{#each members}}
+          <a href="/user/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+        {{/each}}
+      </div>
+      <div id="leader" class="tab-pane fade">
+        <h2>Leader Activities</h2>
+        <div class="form-group">
+            <a href="/selectrootnode/{{guildId}}" class="btn btn-large btn-primary">Select Root Node</a><br/><br/>
+            <a href="/playmoves/{{guildId}}" class="btn btn-large btn-primary">Play Moves</a>
+            <!--TPDP add forms for adding/removing leaders/members -->
+        </div>
+      </div>
+  </div>
+
+</div>

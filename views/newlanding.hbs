@@ -1,0 +1,44 @@
+<div class="home col-xs-12 ">
+    <!-- themessage is set or reset by an Admin -->
+    {{#if themessage}}
+        <span><h3 class="text-danger">{{themessage}}</h3></span>
+    {{/if}}
+
+  <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#home"><h3>Home</h3></a></li>
+      <li><a data-toggle="tab" href="#activity"><h3>Activity</h3></a></li>
+      <li><a data-toggle="tab" href="#help"><h3>Help</h3></a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>TopicQuests TopicHub Portal Prototype</h3>
+      <!-- Spend a lot of time on this tab -->
+        <div class="row">
+        <style>
+            img {
+            opacity: 0.6;
+            filter: alpha(opacity=60); /* For IE8 and earlier */
+            }
+         </style>
+
+
+        <img src="/images/herebedragons.jpg" usemap="#buttonmap">
+        </div> <!-- /row -->
+    </div> <!-- /home -->
+    <div id="activity" class="tab-pane fade">
+      <h3>Recent Activities</h3>
+      <!-- paint the ring buffers here -->
+      <div class="row">
+
+      </div> <!-- /row -->
+    </div> <!-- /activity -->
+    <div id="help" class="tab-pane fade">
+      <h3>Help Topics</h3>
+        <div class="doclist pre-scrollable">
+            {{#each documents}} <!-- TODo: we are punting to Topic display -->
+                <a href="/topic/{{lox}}"><img src="{{sIco}}"> {{label}}</a><br/>
+            {{/each}}
+        </div>
+    </div>  <!-- help -->
+  </div>
+</div>

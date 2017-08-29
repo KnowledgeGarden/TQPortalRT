@@ -1,0 +1,10 @@
+{
+  "server": "localhost",
+  "port": "3000",
+  "brand": "TopicQuests Portal",
+  "portalIsPrivate": false,
+  "invitationOnly": false,
+  "backsideHost" : "localhost",
+  "backsidePort" : "8080",
+  "backsideProtocol" : "http"
+}
