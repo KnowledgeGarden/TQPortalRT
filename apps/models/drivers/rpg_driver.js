@@ -9,7 +9,7 @@ RPGDriver =  module.exports = function(environment) {
     var self = this,
         httpClient = environment.getHttpClient(),
         queryUtil = new Qu();
-    console.log("TopicDriver "+httpClient);
+    console.log("RPGDriver "+httpClient);
 
 
     self.addLeaderToGuild = function(guildLocator, leaderId, language, userId,
