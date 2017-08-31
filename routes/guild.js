@@ -21,7 +21,14 @@
  //     Playing > 1 quest at a time
  //////////////////////
 var Constants = require("../apps/constants"),
-    Help = require("./helpers/helpers");
+    Help = require("./helpers/helpers"),
+    CwM = require("../apps/models/conwidget_model");
+
+////////////////////////////
+// A GuildOwner will have credentials e.g. <guildID>_OL
+// A GuildLeader will have credentials e.g. <guildID>_L
+// A GuildMember will have credentials e.g. <guildID>
+////////////////////////////
 const LEADER = "_L",
       OWNER_LEADER = "_OL";
 
@@ -29,9 +36,10 @@ exports.plugin = function(app, environment) {
     var CommonModel = environment.getCommonModel(),
         helpers = new Help(environment),
         GuildModel = environment.getGuildModel(),
-        AdminModel = environment.getAdminModel();
+        AdminModel = environment.getAdminModel(),
+        ConwidgetModel = new CwM(environment);
 
-    console.log("Guild "+GuildModel);
+    console.log("Guild "+ConwidgetModel);
 
     /**
      * Return <code>true</code> if <code>user</code>
@@ -74,7 +82,7 @@ exports.plugin = function(app, environment) {
     };
 
     function addLeaderToGuild(guildId, user, isOwner, callback) {
-      console.log("ADDLEADER "+guildId+" "+JSON.stringify(user));
+      console.log("ADDGUILDLEADER "+guildId+" "+isOwner+" "+user);
       var credentials = user.uRole,
           gid = guildId;
       if (isOwner) {
@@ -93,7 +101,7 @@ exports.plugin = function(app, environment) {
         //console.log("ADDINGLEADER-2 "+credentials+" | "+OWNER_LEADER);
       }
       user.uRole = credentials; //TODO set back in session?
-      AdminModel.addUserRole(user.uName, gid, function gA(err, rslt) {
+      AdminModel.addUserRole(user.uId, gid, function gA(err, rslt) {
         console.log("ADDEDLEADER "+err);
         return callback(err);
       });
@@ -186,6 +194,7 @@ exports.plugin = function(app, environment) {
       }
     });
 
+    //From the Join Guild button
     app.get("/joinguild/:id", helpers.isPrivate, function(req, res) {
       var q = req.params.id,
           user = helpers.getUser(req),
@@ -219,12 +228,50 @@ exports.plugin = function(app, environment) {
     ///////////////////////////////
     // Guild leader functions
     ///////////////////////////////
+
+    /**
+     * Leader wants to start a new Quest by creating a new meta-conversation
+     */
+    app.get("/newmetamap/:id", function(req, res) {
+      var q = req.params.id;
+      console.log("NewMeta "+q);
+      //TODO
+    });
+
+    /**
+     * Leader has "Remeembered" a node
+     */
     app.get("/selectrootnode/:id", function(req, res) {
       var q = req.params.id;
       console.log("SELROOT "+q);
       //TODO
     });
 
+    app.get("/addleader/:id", function(req, res) {
+      var q = req.params.id;
+      console.log("AddLeader "+q);
+      //TODO
+    });
+    app.get("/removeleader/:id", function(req, res) {
+      var q = req.params.id;
+      console.log("RemoveLeader "+q);
+      //TODO
+    });
+    app.get("/addmember/:id", function(req, res) {
+      var q = req.params.id;
+      console.log("AddMember "+q);
+      //TODO
+    });
+    app.get("/removemember/:id", function(req, res) {
+      var q = req.params.id;
+      console.log("RemoveMember "+q);
+      //TODO
+    });
+
+
+    /**
+     * Leader moves game moves out to the quest's game tree
+     */
     app.get("/playmoves/:id", function(req, res) {
       var q = req.params.id;
       console.log("PLAY "+q);
@@ -233,16 +280,16 @@ exports.plugin = function(app, environment) {
 
     var _guildsupport = function (body, user, userIP, sToken, callback) {
         if (body.locator === "") {
-            GuildModel.create(body, user.uName, userIP, sToken, function (err, result) {
+            GuildModel.create(body, user.uId, userIP, sToken, function (err, result) {
               //creator of a guild is a member
               console.log("GCCC "+JSON.stringify(result));
               var gld = result;
-              addLeaderToGuild(gld.lox, user, true, function gnu(err) {
+              addLeaderToGuild(gld. lox, user, true, function gnu(err) {
                 return callback(err);
               });
             });
         } else {
-            GuildModel.update(body, user.uName, userIP, sToken, function (err, result) {
+            GuildModel.update(body, user.locator. userId, userIP, sToken, function (err, result) {
                 return callback(err, result);
             });
         }
@@ -250,7 +297,7 @@ exports.plugin = function(app, environment) {
 
     app.post("/guild/new", helpers.isLoggedIn, function (req, res) {
       var body = req.body,
-          user = helpers.getUser(req);//req.session[Constants.USER_ID],
+          user = helpers.getUser(req),//req.session[Constants.USER_ID],
           userIP = "",
           sToken = req.session[Constants.SESSION_TOKEN];
       console.log("GUILD_NEW_POST " + JSON.stringify(user));

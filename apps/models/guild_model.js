@@ -32,6 +32,8 @@ GuildModel =  module.exports = function(environment) {
 
     /**
      * Create a new Guild topic
+     * Making the user identified by <code>userId</code> is handled
+     * by the guild router
      */
     self.create = function(json, userId, userIP, sToken, callback) {
         console.log("GUILD_MODEL_NEW_TOPIC "+JSON.stringify(json)+" | "+userId);
@@ -41,7 +43,8 @@ GuildModel =  module.exports = function(environment) {
         CommonModel.createTopicInstance(null, Constants.GUILD_TYPE, userId,
               json.title, json.body, lang, Constants.GUILD, Constants.GUILD_SM,
               false, null, pivots, userIP, sToken, function umC(err, rslt) {
-          return callback(err, rslt);
+            return callback(err, rslt);
+
         });
     };
 

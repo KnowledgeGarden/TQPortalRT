@@ -10,7 +10,7 @@ var Req = require("./models/drivers/http_request"),
     Constants = require("./constants"),
     Admin = require("./models/admin_model"),
     Conver = require("./models/conversation_model"),
-    Kan = require("./models/kanban_model"),
+//    Kan = require("./models/kanban_model"),
     Tag = require("./models/tag_model"),
     Srch = require("./models/search_model"),
     Usr = require("./models/user_model"),
@@ -20,14 +20,7 @@ var Req = require("./models/drivers/http_request"),
     Tdrvr = require("./models/drivers/topic_driver"),
     Udrvr = require("./models/drivers/user_driver"),
     configProperties = require("../config/config.json"),
-    rbuf = require("./ringbuffer"),
-//TODO defaults will be replaced by config.json values
-    defaults = {
-        server: {
-            host: "localhost",
-            port: 9200
-        }
-    };
+    rbuf = require("./ringbuffer");
 
 var Environment = function() {
      var self = this,
@@ -37,7 +30,7 @@ var Environment = function() {
          blogModel,
          bookmarkModel,
          conversationModel,
-         kanbanModel,
+//         kanbanModel,
          tagModel,
          userModel,
          wikiModel,
@@ -47,14 +40,14 @@ var Environment = function() {
          topicDriver,
          userDriver,
          backsideURL,
+         //Ring buffers for "recent changes"
          blogRing,
-
-          wikiRing,
-          tagRing,
-          conversationRing,
-          connectionRing,
-          bookmarkRing,
-          transcludeRing,
+         wikiRing,
+         tagRing,
+         conversationRing,
+         connectionRing,
+         bookmarkRing,
+         transcludeRing,
 
      //view data
          appMenu,
@@ -82,7 +75,7 @@ var Environment = function() {
         blogModel = new Blog(this);
         bookmarkModel = new Bm(this);
         conversationModel = new Conver(this);
-        kanbanModel = new Kan(this);
+//        kanbanModel = new Kan(this);
         tagModel = new Tag(this);
         userModel = new Usr(this);
         wikiModel = new Wiki(this);
@@ -103,6 +96,7 @@ var Environment = function() {
     //////////////////////
     // API
     //////////////////////
+    //Apps add their name and url to Apps menu
     self.addApplicationToMenu = function(url, name, isNew) {
         console.log("EnvAddApp "+name);
         if (!appMenu) {appMenu = [];}
@@ -112,14 +106,18 @@ var Environment = function() {
         urx.isNew = isNew;
         appMenu.push(urx);
     };
+
     self.getApplicationMenu = function() {
         return appMenu;
     };
 
+    //Admin can set a message which displays on the landing page
     self.setMessage = function(msg) {
         theMessage = msg;
     };
 
+    //Return a collection of core data for painting views
+    //This is called on every page view from routers
     self.getCoreUIData = function (req) {
         var result = {};
         result.isAuthenticated = req.session[Constants.USER_IS_AUTHENTICATED];
@@ -187,9 +185,9 @@ var Environment = function() {
         return tagModel;
     };
 
-    self.getKanbanModel = function() {
-        return kanbanModel;
-    };
+//    self.getKanbanModel = function() {
+//        return kanbanModel;
+//    };
 
     self.getUserModel = function() {
         return userModel;

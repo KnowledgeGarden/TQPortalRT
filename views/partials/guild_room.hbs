@@ -26,8 +26,61 @@
         <h2>Leader Activities</h2>
         <div class="form-group">
             <a href="/selectrootnode/{{guildId}}" class="btn btn-large btn-primary">Select Root Node</a><br/><br/>
-            <a href="/playmoves/{{guildId}}" class="btn btn-large btn-primary">Play Moves</a>
+            <a href="/playmoves/{{guildId}}" class="btn btn-large btn-primary">Play Moves</a><br/><br/>
+            <a href="/newmetamap/{{guildId}}" class="btn btn-large btn-primary">Start New Quest Conversation</a>
             <!--TPDP add forms for adding/removing leaders/members -->
+            <hr/>
+            <div>
+              <form name="admemform" method="get" action="/addmember/{{guildId}}"  role="form" class="form-horizontal">
+                <div class="form-group">
+                  Member ID: <input type="text" name="member" value="" class="form-control">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Add Member</button>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <hr/>
+            <div>
+              <form name="removemember" method="get" action="/removemember/{{guildId}}"  role="form" class="form-horizontal">
+                <div class="form-group">
+                  Member ID: <input type="text" name="member" value="" class="form-control">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Remove Member</button>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <hr/>
+            <div>
+              <form name="addleader" method="get" action="/addleader/{{guildId}}"  role="form" class="form-horizontal">
+                <div class="form-group">
+                  Member ID: <input type="text" name="member" value="" class="form-control">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Add Leader</button>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <hr/>
+            <div>
+              <form name="removeleader" method="get" action="/addmember/{{guildId}}"  role="form" class="form-horizontal">
+                <div class="form-group">
+                  Member ID: <input type="text" name="member" value="" class="form-control">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Remove Leader</button>
+                    </div>
+                </div>
+              </form>
+            </div>
         </div>
       </div>
   </div>
