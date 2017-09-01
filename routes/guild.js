@@ -57,11 +57,12 @@ exports.plugin = function(app, environment) {
 
     /**
      * add a member (possibly the owner) to a guild
+     * @param req
      * @param guildId
      * @param user
      * @param callback
      */
-    function addMemberToGuild(guildId, user, callback) {
+    function addMemberToGuild(req, guildId, user, callback) {
       console.log("ADDMEMBER "+guildId+" "+JSON.stringify(user));
       var credentials = user.uRole;
           gid = guildId;
@@ -73,15 +74,16 @@ exports.plugin = function(app, environment) {
         c.push(gid);
         credentials = c;
       }
-      user.uRole = credentials; //TODO set back in session?
-      //NOTE: BacksideServlet uses uName, not uId for methods like this
-      AdminModel.addUserRole(user.uName, guildId, function gA(err, rslt) {
+      user.uRole = credentials;
+      //set back in session
+      req.session[Constants.THE_USER] = user;
+      AdminModel.addUserRole(user.uId, guildId, function gAx(err, rslt) {
         console.log("ADDEDMEMBER "+err);
         return callback(err);
       });
     };
 
-    function addLeaderToGuild(guildId, user, isOwner, callback) {
+    function addLeaderToGuild(req, guildId, user, isOwner, callback) {
       console.log("ADDGUILDLEADER "+guildId+" "+isOwner+" "+user);
       var credentials = user.uRole,
           gid = guildId;
@@ -90,53 +92,63 @@ exports.plugin = function(app, environment) {
       } else {
         gid = gid+LEADER;
       }
-      if (Array.isArray(credentials)) {
-        credentials.push(gid);
-        //console.log("ADDINGLEADER-1 "+credentials+" | "+OWNER_LEADER);
-      } else {
-        var c = [];
-        c.push(credentials);
-        c.push(gid);
-        credentials = c;
-        //console.log("ADDINGLEADER-2 "+credentials+" | "+OWNER_LEADER);
-      }
-      user.uRole = credentials; //TODO set back in session?
-      AdminModel.addUserRole(user.uId, gid, function gA(err, rslt) {
+      //credentials is an array
+      credentials.push(gid);
+
+      user.uRole = credentials;
+      //set back in session
+      req.session[Constants.THE_USER] = user
+      AdminModel.addUserRole(user.uId, gid, function gAy(err, rslt) {
         console.log("ADDEDLEADER "+err);
         return callback(err);
       });
     };
 
-    function removeLeaderFromGuild(guildId, user, callback) {
-      //TODO you cannot remove the owner
+    function removeLeaderFromGuild(req, guildId, user, callback) {
+      console.log("REMOVELEADER "+guildId+" "+JSON.stringify(user));
+      //cannot remove the owner
+      if (userIsOwner(guildId, user)) {
+        return callback("Cannot remove owner");
+      }
+      var credentials = user.uRole;
+      //ASSUME that credentials is an array
+      Help.removeFromArray(credentials, guildId);
+      user.uRole = credentials;
+      //set back in session?
+      req.session[Constants.THE_USER] =
+      AdminModel.removeUserRole(user.uId, guildId, function gAa(err, rslt) {
+        console.log("REMOVEDLEADER "+err);
+        return callback(err);
+      });
     };
 
-    function removeMemberFromGuild(guildId, user, callback) {
+    function removeMemberFromGuild(req, guildId, user, callback) {
       console.log("REMOVEMEMBER "+guildId+" "+JSON.stringify(user));
-      var credentials = user.uRole;
-      ///////////////////////
-      // TODO this code is wrong
-      ///////////////////////
-      if (Array.isArray(credentials)) {
-        credentials.push(guildId);
-      } else {
-        var c = [];
-        c.push(credentials);
-        c.push(guildId);
-        credentials = c;
+      //cannot remove the owner
+      if (userIsOwner(guildId, user)) {
+        return callback("Cannot remove owner");
       }
-      //////////////////////
-      // TODO you cannot remove the owner
-      //////////////////////
-      user.uRole = credentials; //TODO set back in session?
-      AdminModel.removeUserRole(user.uName, guildId, function gA(err, rslt) {
+      var credentials = user.uRole;
+      //ASSUME that credentials is an array
+      Help.removeFromArray(credentials, guildId);
+
+      user.uRole = credentials;
+      //set back in session
+      req.session[Constants.THE_USER] = user;
+      AdminModel.removeUserRole(user.uId, guildId, function gA(err, rslt) {
         console.log("REMOVEDMEMBER "+err);
         return callback(err);
       });
     };
 
+    function userIsOwner(guildId, user) {
+      var credentials = user.uRole,
+          where = credentials.indexOf(guildId+OWNER_LEADER);
+      console.log("OWNER? "+guildId+" "+credentials);
+      return (where > -1);
+    }
 
-    function userIsLeader(guildId, user, callback) {
+    function userIsLeader(guildId, user) {
       var credentials = user.uRole,
           where = credentials.indexOf(guildId+LEADER);
       if (where === -1) {
@@ -200,7 +212,7 @@ exports.plugin = function(app, environment) {
           user = helpers.getUser(req),
           credentials = user.uRole;
       if (q) {
-        addMemberToGuild(q, user, function gAM(err) {
+        addMemberToGuild(req, q, user, function gAM(err) {
           if (err) {
             req.flash("error", "Join error: "+err);
           }
@@ -248,27 +260,38 @@ exports.plugin = function(app, environment) {
     });
 
     app.get("/addleader/:id", function(req, res) {
-      var q = req.params.id;
+      var q = req.params.id,
+          userId = req.query.member;
       console.log("AddLeader "+q);
       //TODO
     });
     app.get("/removeleader/:id", function(req, res) {
-      var q = req.params.id;
+      var q = req.params.id,
+          userId = req.query.member;
       console.log("RemoveLeader "+q);
       //TODO
     });
     app.get("/addmember/:id", function(req, res) {
-      var q = req.params.id;
+      var q = req.params.id,
+          userId = req.query.member;
       console.log("AddMember "+q);
       //TODO
     });
     app.get("/removemember/:id", function(req, res) {
-      var q = req.params.id;
-      console.log("RemoveMember "+q);
+      var q = req.params.id,
+          userId = req.query.member;
+      console.log("RemoveMember "+q+" "+userId);
       //TODO
     });
 
-
+    ///////////////////////////////
+    // Playing a guilds game moves entails taking a game tree
+    // they construct on some pre-selected root node
+    // and moving that tree out and attaching it where it belongs
+    // while at the same time making each node in that tree public
+    // NOTE: open question: do we have to make guild's nodes private
+    //   while under construction?
+    ///////////////////////////////
     /**
      * Leader moves game moves out to the quest's game tree
      */
@@ -278,13 +301,13 @@ exports.plugin = function(app, environment) {
       //TODO
     });
 
-    var _guildsupport = function (body, user, userIP, sToken, callback) {
+    var _guildsupport = function (req, body, user, userIP, sToken, callback) {
         if (body.locator === "") {
             GuildModel.create(body, user.uId, userIP, sToken, function (err, result) {
               //creator of a guild is a member
               console.log("GCCC "+JSON.stringify(result));
               var gld = result;
-              addLeaderToGuild(gld. lox, user, true, function gnu(err) {
+              addLeaderToGuild(req, gld. lox, user, true, function gnu(err) {
                 return callback(err);
               });
             });

@@ -2,6 +2,7 @@
  * Created by park on 4/14/2016.
  */
 var Constants = require("../../apps/constants"),
+    _ = require("underscore"),
     Helpers;
 
 Helpers =  module.exports = function (environment) {
@@ -115,4 +116,14 @@ Helpers =  module.exports = function (environment) {
       return number;
     };
 
+    /**
+     * Remove all instances of <code>elementToRemove< from <code>array<code>
+     * @see http://underscorejs.org/
+     * @param array
+     * @param elementToRemove
+     * @return
+     */
+    self.removeFromArray = function(array, elementToRemove) {
+      return _._without(array, elementToRemove)
+    }
 };
